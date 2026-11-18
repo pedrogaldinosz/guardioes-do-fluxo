@@ -1,0 +1,37 @@
+[
+  {
+    "id": "lorentz",
+    "nome": "Lorentz",
+    "classe": "Propulsor (Ataque)",
+    "pv": 90,
+    "retrato": "assets/lorentz.png"
+  },
+  {
+    "id": "faraday",
+    "nome": "Faraday",
+    "classe": "Indutora (Defesa)",
+    "pv": 110,
+    "retrato": "assets/faraday.png"
+  },
+  {
+    "id": "ampere",
+    "nome": "Ampère",
+    "classe": "Magnetista (Controle)",
+    "pv": 100,
+    "retrato": "assets/ampere.png"
+  },
+  {
+    "id": "wilhelm",
+    "nome": "Wilhelm",
+    "classe": "Polarizador (Controle)",
+    "pv": 85,
+    "retrato": "assets/wilhelm.png"
+  },
+  {
+    "id": "ohm",
+    "nome": "Ohm",
+    "classe": "Engenheiro (Defesa)",
+    "pv": 95,
+    "retrato": "assets/ohm.png"
+  }
+]

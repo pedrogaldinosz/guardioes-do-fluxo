@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#05080c">
+    <title>Guardiões do Fluxo</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div id="splash-turno" class="hidden"></div>
+
+    <!-- 0. TELA DE PRELOADER (BOOT DE SISTEMA ARCADE 16-BITS) -->
+    <div id="tela-preloader" class="tela">
+        <div class="preloader-box">
+            <div class="emblema-reator-preloader">
+                <div class="anel-reator-externo"></div>
+                <div class="anel-reator-interno"></div>
+                <img src="assets/iconejogo.png" alt="Logo" class="icone-preloader-centro">
+            </div>
+
+            <span class="subtag-preloader">SISTEMA DE CALIBRAÇÃO DE ŒRSTED • ROM CHECK</span>
+            <h1 class="titulo-jogo titulo-preloader">CARREGANDO ARENA</h1>
+
+            <div class="barra-preloader-moldura">
+                <div id="barra-preloader-fill" class="barra-preloader-fill"></div>
+                <span id="preloader-pct" class="preloader-pct-txt">0%</span>
+            </div>
+
+            <div class="console-preloader">
+                <span class="led-preloader"></span>
+                <p id="preloader-status-arquivo">Inicializando capacitores de fluxo...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. TELA DE TÍTULO (ATTRACT MODE ARCADE 16-BITS) -->
+    <div id="tela-titulo" class="tela hidden">
+        <div class="moldura-titulo-arcade">
+            <div class="topo-marquee-arcade">
+                <span class="badge-sistema-arcade">ALPHA VER.</span>
+                <span class="badge-sistema-arcade">SOLO [1P]</span>
+            </div>
+
+            <div class="cabecalho-logo-titulo">
+                <span class="subtag-titulo-topo">DUELOS DE ELETROMAGNETISMO</span>
+                <h1 class="titulo-jogo titulo-neon-arcade">GUARDIÕES<br>DO FLUXO</h1>
+                <p class="creditos-criador">Criado por Pedro Galdino</p>
+            </div>
+            
+            <div class="palco-herois-titulo">
+                <div class="aura-palco-titulo"></div>
+                <div class="grupo-personagens">
+                    <img src="assets/faraday_body_atk.png" class="sprite-titulo aura-faraday" alt="Faraday">
+                    <img src="assets/ampere_body_atk.png" class="sprite-titulo aura-ampere" alt="Ampère">
+                    <img src="assets/lorentz_body_atk.png" class="sprite-titulo principal aura-lorentz" alt="Lorentz">
+                    <img src="assets/wilhelm_body_atk.png" class="sprite-titulo aura-wilhelm" alt="Wilhelm">
+                    <img src="assets/ohm_body_atk.png" class="sprite-titulo aura-ohm" alt="Ohm">
+                </div>
+                <div class="plataforma-energia-titulo"></div>
+            </div>
+
+            <button id="btn-comecar-titulo" class="btn-comecar-titulo">
+                <span class="seta-piscante">▶</span> INICIAR <span class="seta-piscante">◀</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. TELA DE INÍCIO (CENTRAL DE COMANDO) -->
+    <div id="tela-inicio" class="tela hidden">
+        <div class="cabecalho-menu-inicio">
+            <div class="emblema-reator-inicio">
+                <div class="anel-reator-externo"></div>
+                <div class="anel-reator-interno"></div>
+                <img src="assets/iconejogo.png" alt="Ícone Guardiões do Fluxo" class="icone-jogo-inicio">
+            </div>
+            <div class="textos-header-inicio">
+                <h1 class="titulo-jogo titulo-neon-arcade">GUARDIÕES<br>DO FLUXO</h1>
+            </div>
+        </div>
+
+        <div class="menu-botoes menu-botoes-moderno">
+            <button id="btn-iniciar" class="btn-retro btn-modulo-menu modulo-duelo">
+                <span class="icone-modulo"><img src="assets/icon_duelo.png" class="img-icone-modulo" alt="Duelo"></span>
+                <span class="titulo-modulo">JOGAR [DUELO]</span>
+                <span class="seta-modulo">▶</span>
+            </button>
+
+            <button id="btn-campanha" class="btn-retro btn-modulo-menu modulo-campanha">
+                <span class="icone-modulo"><img src="assets/icon_modocampanha.png" class="img-icone-modulo" alt="Campanha"></span>
+                <span class="titulo-modulo">MODO CAMPANHA</span>
+                <span class="seta-modulo">▶</span>
+            </button>
+
+            <button id="btn-codex" class="btn-retro btn-modulo-menu modulo-codex">
+                <span class="icone-modulo"><img src="assets/icon_manualdecampo.png" class="img-icone-modulo" alt="Manual"></span>
+                <span class="titulo-modulo">MANUAL DE CAMPO</span>
+                <span class="seta-modulo">▶</span>
+            </button>
+
+            <button id="btn-config" class="btn-retro btn-modulo-menu modulo-config">
+                <span class="icone-modulo"><img src="assets/icon_configuracoes.png" class="img-icone-modulo" alt="Configurações"></span>
+                <span class="titulo-modulo">CONFIGURAÇÕES</span>
+                <span class="seta-modulo">▶</span>
+            </button>
+        </div>
+
+        <!-- BARRA DE STATUS ABAIXO DOS BOTÕES -->
+        <div class="barra-progresso-menu">
+            <div class="item-progresso-menu">
+                <img src="assets/icon_estrelas.png" class="icone-prog-menu" alt="Estrelas">
+                <span class="label-prog-menu">ESTRELAS:</span>
+                <span id="menu-contador-estrelas" class="valor-prog-menu">0 / 15</span>
+            </div>
+            <div class="divisor-prog-menu"></div>
+            <div class="item-progresso-menu">
+                <img src="assets/icon_conquistas.png" class="icone-prog-menu" alt="Conquistas">
+                <span class="label-prog-menu">CONQUISTAS:</span>
+                <span id="menu-contador-conquistas" class="valor-prog-menu">0 / 6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. LIVRO DE CAMPO (CODEX) -->
+    <div id="tela-codex" class="tela hidden">
+        <div class="caixa-codex">
+            <h2 class="subtitulo" style="color: #f1c40f; margin-bottom: 4px;">MANUAL DO JOGO</h2>
+            <p class="creditos-criador" style="font-size: 0.85rem; margin-bottom: 12px;">INFORMAÇÕES & REGISTROS DE ŒRSTED</p>
+            
+            <div class="codex-navegacao">
+                <button class="btn-aba-codex aba-info ativa" onclick="mudarAbaCodex('regras')">COMO JOGAR</button>
+                <button class="btn-aba-codex aba-info" onclick="mudarAbaCodex('lore')">ANOMALIA</button>
+                <button class="btn-aba-codex aba-personagem" onclick="mudarAbaCodex('lorentz')">LORENTZ</button>
+                <button class="btn-aba-codex aba-personagem" onclick="mudarAbaCodex('faraday')">FARADAY</button>
+                <button class="btn-aba-codex aba-personagem" onclick="mudarAbaCodex('ampere')">AMPÈRE</button>
+                <button class="btn-aba-codex aba-personagem" onclick="mudarAbaCodex('wilhelm')">WILHELM</button>
+                <button class="btn-aba-codex aba-personagem" onclick="mudarAbaCodex('ohm')">OHM</button>
+            </div>
+
+            <div class="codex-conteudo" id="codex-conteudo"></div>
+
+            <button id="btn-voltar-codex" class="btn-retro btn-pequeno">VOLTAR</button>
+        </div>
+    </div>
+
+   <!-- TELA DE CONFIGURAÇÕES -->
+    <div id="tela-config" class="tela hidden">
+        <h2 class="subtitulo">CONFIGURAÇÕES</h2>
+        <div class="manual-container config-lista-botoes">
+            <div class="manual-secao config-card-item">
+                <h3>EFEITOS SONOROS (SFX)</h3>
+                <button id="btn-toggle-sfx" class="btn-retro btn-config-icone">
+                    <img src="assets/icon_sfxon.png" class="icone-btn-config" alt="SFX">
+                    <span>SFX: ATIVADO</span>
+                </button>
+            </div>
+            <div class="manual-secao config-card-item">
+                <h3>MÚSICA DE FUNDO (BGM)</h3>
+                <button id="btn-toggle-bgm" class="btn-retro btn-config-icone">
+                    <img src="assets/icon_musicon.png" class="icone-btn-config" alt="BGM">
+                    <span>BGM: ATIVADO</span>
+                </button>
+            </div>
+            <div class="manual-secao config-card-item">
+                <h3>DADOS DO JOGO</h3>
+                <button id="btn-reset-progresso" class="btn-retro btn-perigo btn-config-icone">
+                    <img src="assets/icon_resetardados.png" class="icone-btn-config" alt="Resetar">
+                    <span>RESETAR PROGRESSO</span>
+                </button>
+            </div>
+        </div>
+        <button id="btn-voltar-config" class="btn-retro btn-pequeno">VOLTAR</button>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE RESET -->
+    <div id="modal-confirm-reset" class="modal-overlay hidden">
+        <div class="modal-conteudo">
+            <h2 style="color: #e74c3c;">ATENÇÃO!</h2>
+            <p style="font-size: 0.85rem; color: #ecf0f1; font-family: 'VT323', monospace; text-align: center; margin: 8px 0;">
+                Tem certeza de que deseja apagar todo o progresso da Campanha e as Conquistas? Esta ação não pode ser desfeita.
+            </p>
+            <div class="menu-botoes" style="flex-direction: row; gap: 10px; width: 100%; justify-content: center;">
+                <button id="btn-confirm-reset-sim" class="btn-retro btn-perigo" style="flex: 1;">SIM, RESETAR</button>
+                <button id="btn-confirm-reset-nao" class="btn-retro" style="flex: 1;">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. TELA DE MODO CAMPANHA -->
+    <div id="tela-campanha" class="tela hidden">
+        <h2 class="subtitulo">CAMPANHA: JORNADA DO FLUXO</h2>
+        <p class="creditos-criador" style="font-size: 0.85rem; margin-bottom: 10px;">SELEÇÃO DE ESTÁGIO DE DUELO</p>
+        
+        <div class="mapa-campanha-arcade">
+            <div class="grid-fases-mapa" id="grid-fases-campanha"></div>
+            
+            <div id="painel-preview-fase" class="painel-preview-fase">
+                <h3 id="preview-nome-fase">FASE 1: LORENTZ</h3>
+                <div id="preview-desc-fase">Conceito: Força de Lorentz e Trajetória Curva.</div>
+            </div>
+        </div>
+
+        <div class="menu-botoes-campanha" style="display: flex; gap: 10px; margin-top: 10px; justify-content: center;">
+            <button id="btn-iniciar-fase-selecionada" class="btn-retro btn-campanha-opcao">JOGAR</button>
+            <button id="btn-abrir-conquistas" class="btn-retro btn-campanha-opcao">CONQUISTAS</button>
+            <button id="btn-voltar-campanha" class="btn-retro btn-secundario btn-campanha-opcao">VOLTAR</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONQUISTAS DA CAMPANHA -->
+    <div id="modal-conquistas" class="modal-overlay hidden">
+        <div class="caixa-codex caixa-conquistas">
+            <h2 class="subtitulo" style="color: #f1c40f; margin-bottom: 4px;">CONQUISTAS DO FLUXO</h2>
+            <p class="creditos-criador" style="font-size: 0.85rem; margin-bottom: 12px;">DESAFIOS DA ARENA DE DUELO</p>
+
+            <div id="lista-conquistas-container" class="codex-conteudo grid-conquistas">
+                <!-- Cards de Conquista injetados dinamicamente via JS -->
+            </div>
+
+            <button id="btn-fechar-conquistas" class="btn-retro btn-pequeno" style="margin-top: 10px;">VOLTAR</button>
+        </div>
+    </div>
+
+    <!-- TELA DE CUTSCENE / DIÁLOGO PRÉ-BATALHA (ESTILO CHAT ARCADE) -->
+    <div id="modal-cutscene" class="tela tela-cutscene-chat hidden">
+        <div class="cabecalho-cutscene">
+            <span id="cutscene-estagio-tag">ESTÁGIO 1 - ARENA DE LORENTZ</span>
+        </div>
+
+        <div class="chat-cutscene-container">
+            <!-- BLOCO SUPERIOR: OPONENTE (CHEFE) -->
+            <div id="cutscene-linha-boss" class="mensagem-cutscene boss-msg">
+                <div class="cutscene-speaker direita">
+                    <img id="cutscene-img-boss" src="" alt="Chefe">
+                    <span id="cutscene-nome-boss">CHEFE</span>
+                </div>
+                <div class="caixa-texto-dialogo balao-boss">
+                    <h4 id="cutscene-speaker-boss">CHEFE</h4>
+                    <p id="cutscene-texto-boss"></p>
+                </div>
+            </div>
+
+            <!-- BLOCO INFERIOR: JOGADOR -->
+            <div id="cutscene-linha-player" class="mensagem-cutscene player-msg aguardando">
+                <div class="cutscene-speaker esquerda">
+                    <img id="cutscene-img-jogador" src="" alt="Jogador">
+                    <span id="cutscene-nome-jogador">JOGADOR</span>
+                </div>
+                <div class="caixa-texto-dialogo balao-player">
+                    <h4 id="cutscene-speaker-player">JOGADOR</h4>
+                    <p id="cutscene-texto-player">...</p>
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-avancar-dialogo" class="btn-retro btn-pequeno" style="align-self: flex-end; margin-top: 4px;">AVANÇAR ▶</button>
+    </div>
+
+    <!-- TOAST DE CONQUISTA DESBLOQUEADA -->
+    <div id="toast-conquista" class="toast-conquista hidden">
+        <img src="assets/icon_conquistas.png" alt="Conquista" class="icone-hud">
+        <div class="info-conquista">
+            <span class="titulo-conquista-toast">CONQUISTA DESBLOQUEADA!</span>
+            <span id="nome-conquista-toast" class="desc-conquista-toast">Mestre da Força de Lorentz</span>
+        </div>
+    </div>
+
+    <!-- SELEÇÃO DE PERSONAGENS E MAPAS (ARCADE VS) -->
+    <div id="tela-selecao" class="tela tela-selecao-arcade hidden">
+        <h2 class="subtitulo" id="titulo-tela-selecao">SALA DE COMBATE</h2>
+        <p id="instrucao-selecao" class="creditos-criador" style="margin-bottom: 8px; color: #4da6ff;">
+            1. ESCOLHA O SEU GUARDIÃO (AZUL)
+        </p>
+
+        <div class="palco-selecao-vs">
+            <!-- PREVIEW CORPO INTEIRO: JOGADOR (ESQUERDA - AZUL) -->
+            <div id="vs-card-p1" class="preview-lutador-vs lado-p1 vazio">
+                <span class="tag-lado-vs p1-tag">JOGADOR</span>
+                <div class="box-sprite-vs">
+                    <span id="vs-placeholder-p1" class="placeholder-interrogacao">?</span>
+                    <img id="vs-img-p1" src="" alt="Jogador" class="sprite-vs-body hidden">
+                </div>
+                <div class="info-lutador-vs">
+                    <h3 id="vs-nome-p1">AGUARDANDO...</h3>
+                    <p id="vs-classe-p1">Selecione um card</p>
+                </div>
+            </div>
+
+            <!-- CENTRO: GRADE DE GUARDIÕES + GRADE DE 5 MAPAS -->
+            <div class="centro-selecao-vs">
+                <div id="lista-guardioes" class="grid-cards"></div>
+
+                <div id="secao-mapas-selecao" class="secao-mapas-box">
+                    <h3 class="titulo-secao-mapas">SELECIONE A ARENA DE BATALHA</h3>
+                    <div id="lista-mapas-selecao" class="grid-mapas-selecao"></div>
+                </div>
+            </div>
+
+            <!-- PREVIEW CORPO INTEIRO: OPONENTE (DIREITA - VERMELHO) -->
+            <div id="vs-card-cpu" class="preview-lutador-vs lado-cpu vazio">
+                <span class="tag-lado-vs cpu-tag">OPONENTE</span>
+                <div class="box-sprite-vs">
+                    <span id="vs-placeholder-cpu" class="placeholder-interrogacao">?</span>
+                    <img id="vs-img-cpu" src="" alt="Oponente" class="sprite-vs-body espelhado hidden">
+                </div>
+                <div class="info-lutador-vs">
+                    <h3 id="vs-nome-cpu">AGUARDANDO...</h3>
+                    <p id="vs-classe-cpu">Selecione o rival</p>
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-voltar-inicio" class="btn-retro btn-pequeno">VOLTAR</button>
+    </div>
+
+    <!-- ARENA DE BATALHA -->
+    <div id="tela-jogo" class="tela tela-batalha hidden">
+        <div class="barra-superior-jogo">
+            <div class="placares-turno-centro">
+                <span id="fase-atual" class="texto-turno-jogador">TURNO 01 • SUA VEZ</span>
+            </div>
+
+            <div class="controles-topo">
+                <button id="btn-pausa" class="btn-icone-topo" type="button" title="Pausar Partida (ESC)">
+                    <img src="assets/icon_pausa.png" alt="Pausar">
+                    <span class="label-btn-pausa">PAUSA</span>
+                </button>
+            </div>
+        </div> <!-- <-- ESSA </div> FECHA A BARRA DO TOPO! SE FALTAR ELA, TUDO SOBE PRO TOPO -->
+
+        <div class="hud-topo hud-jogador hud-flutuante-esquerdo">
+            <div class="hud-cabecalho-pers">
+                <img id="sprite-jogador-peq" src="" alt="Avatar" class="avatar-perfil-grande">
+                <div class="info-titulo-pers">
+                    <h2 id="nome-jogador">Jogador</h2>
+                    <span class="classe-sub">Guardião</span>
+                </div>
+            </div>
+            <div class="linhas-status-topo">
+                <div class="linha-status">
+                    <img src="assets/pv.png" class="icone-hud" alt="PV">
+                    <span class="label-status">PV</span>
+                    <div class="container-barra">
+                        <div id="barra-pv-fantasma-jogador" class="preenchimento-fantasma"></div>
+                        <div id="barra-pv-jogador" class="preenchimento pv"></div>
+                    </div>
+                    <span id="pv-jogador" class="texto-status">100</span>
+                </div>
+                <div class="linha-status">
+                    <img src="assets/en.png" class="icone-hud" alt="EN">
+                    <span class="label-status">EN</span>
+                    <div class="container-barra"><div id="barra-en-jogador" class="preenchimento en"></div></div>
+                    <span id="en-jogador" class="texto-status">10</span>
+                </div>
+                <div class="linha-status">
+                    <img src="assets/ult.png" class="icone-hud" alt="ULT">
+                    <span class="label-status">ULT</span>
+                    <div class="ult-slots">
+                        <div class="ult-slot" id="ult-j-1"></div><div class="ult-slot" id="ult-j-2"></div><div class="ult-slot" id="ult-j-3"></div>
+                    </div>
+                    <span id="foco-jogador" class="hidden">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MENU DE COMANDOS FIXO ABAIXO DO HUD (ESTILO POKÉMON) -->
+        <div id="menu-comandos-pokemon" class="painel-comandos-pokemon">
+            <div class="cabecalho-comandos-pokemon">
+                <span id="status-comandos-txt">SELECIONE UMA AÇÃO</span>
+            </div>
+            <div class="grade-botoes-pokemon">
+                <button type="button" id="btn-cmd-basico" class="btn-cmd-poke cmd-ataque">
+                    <img src="assets/atk.png" class="icone-cmd-poke" alt="Ataque">
+                    <div class="textos-cmd-poke">
+                        <span id="nome-cmd-basico" class="titulo-cmd-poke">ATAQUE BÁSICO</span>
+                        <span id="sub-cmd-basico" class="sub-cmd-poke">Calibrar Parâmetros</span>
+                    </div>
+                </button>
+
+                <button type="button" id="btn-cmd-ult" class="btn-cmd-poke cmd-ultimato" disabled>
+                    <img src="assets/ult.png" class="icone-cmd-poke" alt="Ultimato">
+                    <div class="textos-cmd-poke">
+                        <span id="nome-cmd-ult" class="titulo-cmd-poke">ULTIMATO</span>
+                        <span id="sub-cmd-ult" class="sub-cmd-poke">Carga: 0 / 3</span>
+                    </div>
+                </button>
+
+                <button type="button" id="btn-cmd-descansar" class="btn-cmd-poke cmd-descanso">
+                    <img src="assets/pv.png" class="icone-cmd-poke" alt="Descansar">
+                    <div class="textos-cmd-poke">
+                        <span class="titulo-cmd-poke">DESCANSAR</span>
+                        <span class="sub-cmd-poke">+10 PV e +4 EN</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- PAINEL DE PARAMETRAGEM E PREVISÃO (ABRE POR CIMA DOS COMANDOS) -->
+        <div id="painel-acoes" class="painel-flutuante-esquerdo hidden">
+            <h3 id="nome-habilidade">Habilidade</h3>
+            <p class="instrucao" id="texto-pregunta-previsao">Configure os parâmetros:</p>
+            <div id="inputs-dinamicos" class="grid-inputs-vertical"></div>
+            
+            <div id="fase-configuracao">
+                <p><img src="assets/en.png" class="icone-hud" alt="EN"> Custo EN: <span id="custo-en">1</span></p>
+                <div class="botoes-acao-duplos">
+                    <button id="btn-confirmar-parametros" class="btn-retro">CONFIRMAR</button>
+                    <button id="btn-voltar-comandos" type="button" class="btn-retro btn-secundario">◀ VOLTAR</button>
+                </div>
+            </div>
+            <div id="fase-previsao" class="hidden">
+                <div id="botoes-previsao" class="botoes-acao-duplos"></div>
+            </div>
+        </div>
+
+        <!-- Mantido oculto por compatibilidade -->
+        <button id="btn-acao" class="hidden">PREPARE-SE</button>
+        <button id="btn-descansar" class="hidden">DESCANSAR</button>
+
+        <div class="hud-topo hud-inimigo enemy-stats hud-flutuante-direito">
+            <div class="hud-cabecalho-pers enemy-cabecalho">
+                <div class="info-titulo-pers">
+                    <h2 id="nome-inimigo">Inimigo</h2>
+                    <span class="classe-sub">Oponente</span>
+                </div>
+                <img id="sprite-inimigo-peq" src="" alt="Avatar" class="avatar-perfil-grande">
+            </div>
+            <div class="linhas-status-topo">
+                <div class="linha-status">
+                    <span id="pv-inimigo" class="texto-status">100</span>
+                    <div class="container-barra">
+                        <div id="barra-pv-fantasma-inimigo" class="preenchimento-fantasma"></div>
+                        <div id="barra-pv-inimigo" class="preenchimento pv"></div>
+                    </div>
+                    <span class="label-status">PV</span>
+                    <img src="assets/pv.png" class="icone-hud" alt="PV">
+                </div>
+                <div class="linha-status">
+                    <span id="en-inimigo" class="texto-status">10</span>
+                    <div class="container-barra"><div id="barra-en-inimigo" class="preenchimento en"></div></div>
+                    <span class="label-status">EN</span>
+                    <img src="assets/en.png" class="icone-hud" alt="EN">
+                </div>
+                <div class="linha-status">
+                    <span id="foco-inimigo" class="hidden">0</span>
+                    <div class="ult-slots">
+                        <div class="ult-slot" id="ult-i-3"></div><div class="ult-slot" id="ult-i-2"></div><div class="ult-slot" id="ult-i-1"></div>
+                    </div>
+                    <span class="label-status">ULT</span>
+                    <img src="assets/ult.png" class="icone-hud" alt="ULT">
+                </div>
+            </div>
+        </div>
+
+        <!-- PALCO CENTRAL / CANVAS (ÚNICO) -->
+        <div id="arena-container">
+            <canvas id="arenaCanvas" width="960" height="525"></canvas>
+            <img id="sprite-jogador-body" src="" alt="Jogador" class="sprite-grande idle-esq sprite-batalha-jogador">
+            <img id="sprite-inimigo-body" src="" alt="Inimigo" class="sprite-grande idle-dir sprite-batalha-inimigo">
+        </div>
+
+        <!-- BALÃO DE DICA DIDÁTICA DO PERSONAGEM DO JOGADOR (ÚNICO) -->
+        <div id="balao-dica-jogador" class="balao-dica-box hidden">
+            <div class="balao-cabecalho">
+                <img id="img-dica-jogador" src="" alt="Avatar" class="avatar-dica">
+                <span id="nome-dica-jogador" class="autor-dica">LORENTZ EXPLICA:</span>
+            </div>
+            <p id="texto-dica-typewriter" class="texto-dica"></p>
+        </div>
+
+        <!-- PAINEL DE FEEDBACK DA AÇÃO -->
+        <div id="painel-feedback" class="feedback-painel hidden">
+            <h3 id="feedback-titulo">Resultado</h3>
+            <p id="feedback-causa">Frase de causa física.</p>
+            <div class="feedback-stats">
+                <span id="feedback-dano"><img src="assets/atk.png" class="icone-hud" alt="Atk"> Dano: 0</span>
+                <span id="feedback-foco"><img src="assets/ult.png" class="icone-hud" alt="Ult"> Ult: +0</span>
+            </div>
+        </div>
+        
+        <!-- LOG TERMINAL DA BATALHA -->
+        <div id="log-batalha" class="log-terminal-inferior">
+            <p class="log-linha neutro">&gt;&gt; Sistema iniciado. Combate iniciado.</p>
+        </div>
+    </div>
+
+    <!-- TELA DE FIM DE JOGO -->
+    <div id="tela-fim-jogo" class="tela hidden">
+        <h1 id="titulo-fim">FIM DE JOGO</h1>
+        <p id="mensagem-fim">O destino da energia foi decidido.</p>
+        <div id="menu-botoes-fim" class="menu-botoes-fim-container">
+            <button id="btn-proxima-fase" class="btn-retro hidden" style="border-color: #2ecc71; color: #2ecc71;">PRÓXIMA FASE ▶</button>
+            <button id="btn-jogar-novamente" class="btn-retro">JOGAR NOVAMENTE</button>
+            <button id="btn-voltar-menu-fim" class="btn-retro btn-secundario" onclick="voltarParaMenuDoFim()">MENU PRINCIPAL</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE PAUSA -->
+    <div id="modal-pausa" class="modal-overlay hidden">
+        <div class="modal-conteudo">
+            <h2 id="titulo-modal-pausa">JOGO PAUSADO</h2>
+            
+            <!-- OPÇÕES PRINCIPAIS DA PAUSA -->
+            <div id="menu-pausa-opcoes" class="menu-botoes">
+                <button id="btn-retomar" class="btn-retro">RETOMAR</button>
+                <button id="btn-modal-recomecar" class="btn-retro">RECOMEÇAR</button>
+                <button id="btn-modal-config" class="btn-retro">CONFIGURAÇÕES</button>
+                <button id="btn-modal-sair" class="btn-retro btn-secundario">MENU</button>
+            </div>
+
+            <!-- SUBMENU DE CONFIGURAÇÕES NA PAUSA -->
+            <div id="pausa-config-opcoes" class="menu-botoes hidden">
+                <div class="config-card-item">
+                    <h3>EFEITOS SONOROS (SFX)</h3>
+                    <button id="btn-pausa-sfx" class="btn-retro btn-config-icone">
+                        <img src="assets/icon_sfxon.png" class="icone-btn-config" alt="SFX">
+                        <span>SFX: ATIVADO</span>
+                    </button>
+                </div>
+                <div class="config-card-item" style="margin-top: 4px;">
+                    <h3>MÚSICA DE FUNDO (BGM)</h3>
+                    <button id="btn-pausa-bgm" class="btn-retro btn-config-icone">
+                        <img src="assets/icon_musicon.png" class="icone-btn-config" alt="BGM">
+                        <span>BGM: ATIVADO</span>
+                    </button>
+                </div>
+                <button id="btn-voltar-pausa-config" class="btn-retro btn-secundario" style="margin-top: 8px;">VOLTAR</button>
+            </div>
+
+            <!-- CONFIRMAÇÃO DE SAÍDA -->
+            <div id="confirmacao-sair" class="menu-botoes hidden">
+                <p style="font-size: 1.15rem; color: #e74c3c; font-family: 'VT323', monospace;">Deseja sair? O progresso da partida será perdido.</p>
+                <button id="btn-confirma-sair-sim" class="btn-retro btn-perigo">SIM, SAIR</button>
+                <button id="btn-confirma-sair-nao" class="btn-retro">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="audio.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
